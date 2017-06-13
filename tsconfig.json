@@ -1,0 +1,15 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "target": "es5",
+    "outDir": "./out-tsc",
+    "moduleResolution": "node",
+    "lib": [ "es2016" ],
+    "sourceMap": true,
+    "declaration": false,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "noUnusedLocals": true,
+    "noImplicitAny": true
+  }
+}
