@@ -1,0 +1,55 @@
+#!/bin/sh
+
+remote="$1"
+url="$2"
+
+z40=0000000000000000000000000000000000000000
+
+RED='\033[0;31m'
+NC='\033[0m' # No Color
+
+while read local_ref local_sha remote_ref remote_sha
+do
+	remote_branch=`echo $remote_ref | cut -d/ -f3`
+
+	if [ "$local_sha" = $z40 ]
+	then
+		# Handle delete
+		:
+	else
+		if [ "$remote_sha" = $z40 ]
+		then
+			# New branch, examine all commits
+			range="$local_sha"
+		else
+			# Update to existing branch, examine new commits
+			range="$remote_sha..$local_sha"
+		fi
+
+		# Log outgoing commits
+		echo
+		echo Pushing $local_sha to $remote_branch.
+		echo
+		git log --pretty="format:%h %aN: %s" "$range"
+		echo
+
+		# Check for 'wip' commit
+		wip_commit=`git rev-list -n 1 --grep '^wip' "$range"`
+		if [ -n "$wip_commit" ]
+		then
+			echo -e "${RED}Found 'wip' commit in outgoing log, aborting push.${NC}"
+			exit 1
+		fi
+
+		# Confirm push
+		read -p "You're about to push the above commits. Are you sure? (Y/N) " -n 1 -r < /dev/tty
+		echo
+		if [[ $REPLY =~ ^[Yy]$ ]]
+		then
+			exit 0
+		fi
+		exit 1
+	fi
+done
+
+exit 0
