@@ -23,13 +23,13 @@ function findFolders(rootFolderPath, subFolderNames) {
         folders = [rootFolderPath];
     } else {
         let subFolders = fs.readdirSync(rootFolderPath)
-			.filter(file => fs.statSync(path.join(rootFolderPath, file)).isDirectory())
-			.map(subFolder => subFolder.toLowerCase())
-			.filter(subFolder => subFolder.indexOf('.hg') === -1)
-			.filter(subFolder => subFolder.indexOf('node_modules') === -1)
-			.filter(subFolder => subFolder.indexOf('clientsidecontrols') === -1)
-			.filter(subFolder => subFolder.indexOf('externaldependencies') === -1)
-			.map(subFolder => path.join(rootFolderPath, subFolder).toLowerCase());
+      .filter(file => fs.statSync(path.join(rootFolderPath, file)).isDirectory())
+      .map(subFolder => subFolder.toLowerCase())
+      .filter(subFolder => subFolder.indexOf('.hg') === -1)
+      .filter(subFolder => subFolder.indexOf('node_modules') === -1)
+      .filter(subFolder => subFolder.indexOf('clientsidecontrols') === -1)
+      .filter(subFolder => subFolder.indexOf('externaldependencies') === -1)
+      .map(subFolder => path.join(rootFolderPath, subFolder).toLowerCase());
 
         for (let i = 0; i < subFolders.length; ++i) {
             folders = folders.concat(findFolders(subFolders[i], subFolderNames));
