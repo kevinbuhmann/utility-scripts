@@ -34,7 +34,7 @@ do
     echo
 
     # Check for 'wip' commit
-    wip_commit=`git rev-list -n 1 --grep 'wip' --grep 'fixup' "$range"`
+    wip_commit=`git rev-list -n 1 --grep 'wip' --grep 'fixup' -i "$range"`
     if [ -n "$wip_commit" ]
     then
       echo -e "${RED}Found 'wip' or 'fixup' commit in outgoing log, aborting push.${NC}"
